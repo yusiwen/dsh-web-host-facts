@@ -1,0 +1,4 @@
+# Host half: one runtime-context row. Configuration is optional (`ttlMs`, default 600000).
+- insert:
+    - id: web-host-facts
+      name: dsh-web-host-facts

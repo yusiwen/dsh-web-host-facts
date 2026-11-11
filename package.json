@@ -1,0 +1,58 @@
+{
+  "name": "dsh-web-host-facts",
+  "version": "0.1.0",
+  "description": "DeepSeek Harness plugin: inject host facts (OS, Nix, git signing, gpg keyring) into the model's runtime context.",
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "host-facts",
+    "runtime-context",
+    "system-prompt",
+    "nix",
+    "gpg"
+  ],
+  "homepage": "https://github.com/yusiwen/dsh-web-host-facts#readme",
+  "bugs": {
+    "url": "https://github.com/yusiwen/dsh-web-host-facts/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yusiwen/dsh-web-host-facts.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Siwen Yu",
+    "email": "yusiwen@gmail.com"
+  },
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "files": [
+    "index.js",
+    "src",
+    "cordis.patch.yml",
+    "README.md",
+    "README.zh.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0",
+    "dsh": ">=0.2.1-rc.2 <0.3.0-0"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check index.js && node --check src/facts.js && node --test",
+    "pack:check": "npm pack --dry-run"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
