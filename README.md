@@ -127,13 +127,26 @@ npm run pack:check
 The plugin has no runtime dependencies and no build step. `index.js` owns registration and caching;
 `src/facts.js` owns the probes and is covered by unit tests for the pure helpers and the line shape.
 
-## Publishing
+## Releasing
+
+Releases are tag-driven. Pushing a `v*` tag runs
+[release.yml](.github/workflows/release.yml), which verifies that the tag equals
+`package.json.version`, runs the checks, publishes through npm trusted publishing (OIDC) with
+provenance, and creates the GitHub release. No long-lived npm token is stored in the repository or in
+GitHub secrets.
 
 ```bash
-npm login
-npm publish          # publishConfig.access is public
-git tag v0.1.0 && git push --tags
+# 1. bump package.json version and update CHANGELOG.md, then commit on main
+git tag v0.1.0
+git push origin v0.1.0
 ```
+
+The workflow skips the publish when that version already exists on npm, so re-running a tag is safe.
+
+One-time setup on npmjs.com: **package → Settings → Trusted Publisher → GitHub Actions**, repository
+`yusiwen/dsh-web-host-facts`, workflow `release.yml`, permissions **publish** and **stage publish**.
+The package name was bootstrapped with a `0.0.0-stage` placeholder before the first OIDC release; the
+placeholder is inert and can be deprecated once a real version is `latest`.
 
 ## License
 

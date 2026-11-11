@@ -104,11 +104,22 @@ npm run pack:check
 
 ## 发布
 
+发布由 tag 驱动。推送 `v*` tag 会触发 [release.yml](.github/workflows/release.yml)：校验 tag 与
+`package.json.version` 一致、跑检查、通过 npm trusted publishing（OIDC）带 provenance 发布，并创建
+GitHub release。仓库和 GitHub secrets 里都不保存长期 npm token。
+
 ```bash
-npm login
-npm publish          # publishConfig.access 为 public
-git tag v0.1.0 && git push --tags
+# 1. 更新 package.json 版本号和 CHANGELOG.md，在 main 上提交
+git tag v0.1.0
+git push origin v0.1.0
 ```
+
+该版本已存在时工作流会跳过发布，因此重推同一 tag 是安全的。
+
+npmjs.com 上的一次性配置：**package → Settings → Trusted Publisher → GitHub Actions**，仓库
+`yusiwen/dsh-web-host-facts`，workflow `release.yml`，权限勾选 **publish** 与 **stage publish**。
+首个 OIDC 版本之前，包名用 `0.0.0-stage` 占位；占位版本是惰性的，等真实版本成为 `latest` 后可以
+deprecate 它。
 
 ## 许可
 
